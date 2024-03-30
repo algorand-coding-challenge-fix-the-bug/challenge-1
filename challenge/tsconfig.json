@@ -7,6 +7,10 @@
     "jsx": "react-jsx",
     "allowJs": true,
 
+    /*adding this to use typescript*/
+    "types": ["jsdom"],
+
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
