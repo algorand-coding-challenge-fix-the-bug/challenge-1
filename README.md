@@ -53,6 +53,9 @@ Now you are ready to fix the bug!
 4. Run `npm run start` inside of `challenge` directory again to run the `index.ts` file.
 If you see: `Payment of 1000000 microAlgos was sent to [receiver's address]` in the console, you successfully fixed the bug! 👏
 
+<img src="https://raw.githubusercontent.com/ubinix-warun/algorand-coding-challenge-1/main/asset/Screenshot%202567-03-06%20at%2014.49.13.png" />
+
+
 **😰 Are you struggling?**
 Here is a hint for you: https://developer.algorand.org/docs/sdks/javascript/
 
@@ -69,3 +72,10 @@ Here is a hint for you: https://developer.algorand.org/docs/sdks/javascript/
 The Algorand Developer Relations team will review the submission and "approve" the PR by labeling it `Approved`. Once it's approved, we will share the magic link to claim your certificate of completion NFT in the comment of the PR! 
 
 🎉 Congratulations on completing the challenge Algodev! Now on to the next one 💪
+
+## Cheatsheet
+
+```
+brew install algorandfoundation/tap/algokit
+
+```
