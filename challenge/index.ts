@@ -22,17 +22,33 @@ When solved correctly, the console should print out the following:
 "Payment of 1000000 microAlgos was sent to RRYKB23LFR62G3P4SFINZDQ4FVDUNWWQ4NOF7K6TP5GO65BQCHYMNTR3CU at confirmed round 59"
 */
 const suggestedParams = await algodClient.getTransactionParams().do();
-const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+// const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+//     from: sender.addr,
+//     suggestedParams,
+//     to: receiver.addr,
+//     amount: 1000000,
+// });
+
+// await algodClient.sendRawTransaction(txn).do();
+// const result = await algosdk.waitForConfirmation(
+//     algodClient,
+//     txn.txID().toString(),
+//     3
+// );
+const unsignedTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: sender.addr,
-    suggestedParams,
+    suggestedParams: suggestedParams,
     to: receiver.addr,
     amount: 1000000,
 });
 
-await algodClient.sendRawTransaction(txn).do();
+const txgroup = algosdk.assignGroupID([unsignedTxn]);
+const signedTxn1 = txgroup[0].signTxn(sender.sk);
+
+await algodClient.sendRawTransaction(signedTxn1).do();
 const result = await algosdk.waitForConfirmation(
     algodClient,
-    txn.txID().toString(),
+    unsignedTxn.txID().toString(),
     3
 );
 
