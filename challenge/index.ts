@@ -1,5 +1,6 @@
 import algosdk  from "algosdk";
 import * as algokit from '@algorandfoundation/algokit-utils';
+import { consoleLogger } from "@algorandfoundation/algokit-utils/types/logging";
 
 const algodClient = algokit.getAlgoClient()
 
@@ -29,11 +30,14 @@ const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     amount: 1000000,
 });
 
-await algodClient.sendRawTransaction(txn).do();
+const signedTxn = txn.signTxn(sender.sk);
+
+//await algodClient.sendRawTransaction(txn.to.publicKey).do();
+await algodClient.sendRawTransaction(signedTxn).do();
 const result = await algosdk.waitForConfirmation(
     algodClient,
     txn.txID().toString(),
     3
 );
 
-console.log(`Payment of ${result.txn.txn.amt} microAlgos was sent to ${receiver.addr} at confirmed round ${result['confirmed-round']}`);
+consoleLogger.debug(`Payment of ${result.txn.txn.amt} microAlgos was sent to ${receiver.addr} at confirmed round ${result['confirmed-round']}`);
