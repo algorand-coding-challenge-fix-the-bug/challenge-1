@@ -1,7 +1,8 @@
 {
   "name": "algorand-puzzle-1",
+  "version": "1.0.0",
   "scripts": {
-    "start": "tsx -r dotenv/config index.ts"
+    "start": "tsx -r dotenv/config challenge/index.ts"
   },
   "module": "index.ts",
   "type": "module",
@@ -15,3 +16,6 @@
     "tsx": "^4.7.0"
   }
 }
+
+
+
