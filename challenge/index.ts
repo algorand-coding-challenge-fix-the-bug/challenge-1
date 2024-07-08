@@ -29,7 +29,9 @@ const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     amount: 1000000,
 });
 
-await algodClient.sendRawTransaction(txn).do();
+const stxn = algosdk.signTransaction(txn, sender.sk);
+
+await algodClient.sendRawTransaction(stxn.blob).do();
 const result = await algosdk.waitForConfirmation(
     algodClient,
     txn.txID().toString(),
