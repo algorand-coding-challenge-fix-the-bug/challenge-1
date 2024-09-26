@@ -1,4 +1,4 @@
-import algosdk  from "algosdk";
+import algosdk, { signTransaction } from "algosdk";
 import * as algokit from '@algorandfoundation/algokit-utils';
 
 const algodClient = algokit.getAlgoClient()
@@ -6,9 +6,9 @@ const algodClient = algokit.getAlgoClient()
 // Retrieve 2 accounts from localnet kmd
 const sender = await algokit.getLocalNetDispenserAccount(algodClient)
 const receiver = await algokit.mnemonicAccountFromEnvironment(
-    {name: 'RECEIVER', fundWith: algokit.algos(100)},
+    { name: 'RECEIVER', fundWith: algokit.algos(100) },
     algodClient,
-  )
+)
 
 /*
 TODO: edit code below
@@ -29,10 +29,12 @@ const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     amount: 1000000,
 });
 
-await algodClient.sendRawTransaction(txn).do();
+const { txID, blob } = signTransaction(txn, sender.sk)
+
+await algodClient.sendRawTransaction(blob).do();
 const result = await algosdk.waitForConfirmation(
     algodClient,
-    txn.txID().toString(),
+    txID,
     3
 );
 
