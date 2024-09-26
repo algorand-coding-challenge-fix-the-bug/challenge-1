@@ -1,14 +1,14 @@
-import algosdk  from "algosdk";
-import * as algokit from '@algorandfoundation/algokit-utils';
+import algosdk from "algosdk";
+import * as algokit from "@algorandfoundation/algokit-utils";
 
-const algodClient = algokit.getAlgoClient()
+const algodClient = algokit.getAlgoClient();
 
 // Retrieve 2 accounts from localnet kmd
-const sender = await algokit.getLocalNetDispenserAccount(algodClient)
+const sender = await algokit.getLocalNetDispenserAccount(algodClient);
 const receiver = await algokit.mnemonicAccountFromEnvironment(
-    {name: 'RECEIVER', fundWith: algokit.algos(100)},
-    algodClient,
-  )
+  { name: "RECEIVER", fundWith: algokit.algos(100) },
+  algodClient
+);
 
 /*
 TODO: edit code below
@@ -23,17 +23,20 @@ When solved correctly, the console should print out the following:
 */
 const suggestedParams = await algodClient.getTransactionParams().do();
 const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-    from: sender.addr,
-    suggestedParams,
-    to: receiver.addr,
-    amount: 1000000,
+  from: sender.addr,
+  suggestedParams,
+  to: receiver.addr,
+  amount: 1000000,
 });
 
-await algodClient.sendRawTransaction(txn).do();
+const signedTxn = await algokit.signTransaction(txn, sender);
+await algodClient.sendRawTransaction(signedTxn).do();
 const result = await algosdk.waitForConfirmation(
-    algodClient,
-    txn.txID().toString(),
-    3
+  algodClient,
+  txn.txID().toString(),
+  3
 );
 
-console.log(`Payment of ${result.txn.txn.amt} microAlgos was sent to ${receiver.addr} at confirmed round ${result['confirmed-round']}`);
+console.log(
+  `Payment of ${result.txn.txn.amt} microAlgos was sent to ${receiver.addr} at confirmed round ${result["confirmed-round"]}`
+);
