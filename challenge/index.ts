@@ -1,4 +1,5 @@
 import algosdk  from "algosdk";
+import { Buffer } from 'buffer';
 import * as algokit from '@algorandfoundation/algokit-utils';
 
 const algodClient = algokit.getAlgoClient()
@@ -27,9 +28,12 @@ const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     suggestedParams,
     to: receiver.addr,
     amount: 1000000,
+    note: new Uint8Array(Buffer.from('Algorand coding challenges are fun')),
 });
 
-await algodClient.sendRawTransaction(txn).do();
+const signedTxn = txn.signTxn(sender.sk);
+
+await algodClient.sendRawTransaction(signedTxn).do();
 const result = await algosdk.waitForConfirmation(
     algodClient,
     txn.txID().toString(),
